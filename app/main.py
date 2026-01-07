@@ -50,9 +50,16 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Bengali Political Meme Classifier", lifespan=lifespan)
 
-@app.get("/")
-def root():
-    return {"message": "ViT Meme Classifier API is running"}
+# Mount Static Files
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+async def root():
+    with open("app/static/index.html") as f:
+        return f.read()
 
 @app.post("/predict")
 async def predict_meme(file: UploadFile = File(...)):

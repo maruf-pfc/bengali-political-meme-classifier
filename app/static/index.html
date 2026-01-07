@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bengali Political Meme Classifier</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Meme Classifier</h1>
+            <p class="subtitle">Detect if a Bengali meme is Political or Not</p>
+
+            <input type="file" id="fileInput" accept="image/*">
+            
+            <div class="upload-zone" id="dropZone">
+                <div id="uploadPrompt">
+                    <div class="upload-icon">📁</div>
+                    <div class="upload-text">Click or Drag Image Here</div>
+                    <div class="upload-subtext">Supports JPG, PNG</div>
+                </div>
+
+                <div class="preview-container" id="previewContainer">
+                    <img id="imagePreview" class="image-preview" src="" alt="Preview">
+                </div>
+            </div>
+
+            <div class="loading-spinner" id="loadingSpinner"></div>
+
+            <div class="result-container" id="resultContainer">
+                <div id="resultBadge" class="badge"></div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
