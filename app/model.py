@@ -13,9 +13,12 @@ model = ViTForImageClassification.from_pretrained(
     ignore_mismatched_sizes=True
 )
 
-model.load_state_dict(torch.load("model/vit_meme_model.pth", map_location=device))
-model.to(device)
-model.eval()
+def load_weights(path="model/vit_meme_model.pth"):
+    print(f"Loading weights from {path}...")
+    model.load_state_dict(torch.load(path, map_location=device))
+    model.to(device)
+    model.eval()
+    print("Model weights loaded successfully!")
 
 transform = transforms.Compose([
     transforms.Resize((224, 224)),

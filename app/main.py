@@ -6,7 +6,7 @@ import os
 import requests
 import sys
 
-from app.model import predict
+from app.model import predict, load_weights
 
 MODEL_PATH = "model/vit_meme_model.pth"
 
@@ -41,11 +41,20 @@ def download_model():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # 1. Ensure model file exists
     if not os.path.exists(MODEL_PATH):
         print(f"Model not found at {MODEL_PATH}. Attempting download...")
         download_model()
     else:
         print(f"Model found at {MODEL_PATH}.")
+    
+    # 2. Load weights into the model
+    try:
+        load_weights(MODEL_PATH)
+    except Exception as e:
+        print(f"CRITICAL ERROR: Failed to load model weights: {e}")
+        # Note: We continue so the app doesn't crash loop, but predictions will likely fail or use random weights
+        
     yield
 
 app = FastAPI(title="Bengali Political Meme Classifier", lifespan=lifespan)
