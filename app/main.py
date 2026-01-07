@@ -1,10 +1,54 @@
 from fastapi import FastAPI, UploadFile, File
+from contextlib import asynccontextmanager
 from PIL import Image
 import io
+import os
+import requests
+import sys
 
 from app.model import predict
 
-app = FastAPI(title="Bengali Political Meme Classifier")
+MODEL_PATH = "model/vit_meme_model.pth"
+
+def download_model():
+    model_url = os.getenv("MODEL_URL")
+    if not model_url:
+        print("Warning: MODEL_URL not set. Cannot auto-download model.")
+        return
+
+    print(f"Downloading model from {model_url}...")
+    try:
+        os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+        
+        # Check if it's a Google Drive link (gdown handles these best)
+        if "drive.google.com" in model_url:
+            import gdown
+            gdown.download(model_url, MODEL_PATH, quiet=False, fuzzy=True)
+        else:
+            # Fallback for standard direct links
+            response = requests.get(model_url, stream=True)
+            response.raise_for_status()
+            with open(MODEL_PATH, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+                    
+        print("Model downloaded successfully!")
+    except ImportError:
+        print("Error: gdown not installed but Google Drive link detected.")
+    except Exception as e:
+        print(f"Error downloading model: {e}")
+        # We don't exit here, so the app can still start (but will fail on predict)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if not os.path.exists(MODEL_PATH):
+        print(f"Model not found at {MODEL_PATH}. Attempting download...")
+        download_model()
+    else:
+        print(f"Model found at {MODEL_PATH}.")
+    yield
+
+app = FastAPI(title="Bengali Political Meme Classifier", lifespan=lifespan)
 
 @app.get("/")
 def root():

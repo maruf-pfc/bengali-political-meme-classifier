@@ -10,3 +10,4 @@ services:
     restart: unless-stopped
     environment:
       - PORT=1221
+      - MODEL_URL=https://drive.google.com/file/d/1xeTv8y6El2rITqZ5BEkYZFvNMP-S3GJb/view?usp=sharing

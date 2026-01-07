@@ -33,3 +33,5 @@ wheels/
 # System
 .DS_Store
 Thumbs.db
+
+model/*

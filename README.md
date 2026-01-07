@@ -15,10 +15,11 @@ This is a **ViT-based Image Classifier** trained to distinguish between **Politi
 ### Prerequisites
 - Python 3.10+
 - Virtual Environment (recommended)
-- **Model File**: Ensure `vit_meme_model.pth` is in the `model/` directory.
+- **Model File**: Ensure `vit_meme_model.pth` is in the `model/` directory, OR set `MODEL_URL` to download it automatically.
 
 ### Deployment Checklist
-- [ ] Model file (`model/vit_meme_model.pth`) is present.
+- [ ] Model file (`model/vit_meme_model.pth`) is present OR
+- [ ] `MODEL_URL` environment variable is set to a direct download link.
 - [ ] Environment variables (if any) are set.
 - [ ] `.gitignore` is configured to exclude `env/`, `__pycache__/`, etc.
 
@@ -51,6 +52,35 @@ This is a **ViT-based Image Classifier** trained to distinguish between **Politi
 5. **Access the API:**
    - Swagger Documentation: [http://localhost:1221/docs](http://localhost:1221/docs)
    - Health Check: [http://localhost:1221/](http://localhost:1221/)
+
+---
+
+## 🏋️ Training the Model
+Since the model file is not included (due to size), you can train it yourself using the provided dataset.
+
+1.  **Prepare Dataset:**
+    - Download your dataset.
+    - Organize it into two folders: `Political` and `NonPolitical`.
+    - Example structure:
+      ```
+      dataset/
+      ├── Political/
+      │   ├── image1.jpg
+      │   └── ...
+      └── NonPolitical/
+          ├── image1.jpg
+          └── ...
+      ```
+
+2.  **Run Training:**
+    ```bash
+    # Activate your env first!
+    python train.py --data_dir /path/to/dataset --epochs 3
+    ```
+
+3.  **Result:**
+    - The model will be saved to `model/vit_meme_model.pth`.
+    - You can now run the app!
 
 ---
 
