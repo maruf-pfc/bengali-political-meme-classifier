@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  meme-classifier:
+    build: .
+    ports:
+      - "1221:1221"
+    volumes:
+      - ./model:/app/model  # Mount model directory to avoid image bloat if model changes often, or just for persistence
+    restart: unless-stopped
+    environment:
+      - PORT=1221
