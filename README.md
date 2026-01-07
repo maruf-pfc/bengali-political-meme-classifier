@@ -5,10 +5,23 @@ This is a **ViT-based Image Classifier** trained to distinguish between **Politi
 ## 🚀 Features
 - **FastAPI** backend for high-performance inference.
 - **Vision Transformer (ViT)** model for state-of-the-art image classification.
+- **Premium Web UI**: Glassmorphism design with drag-and-drop support.
+- **Auto-Model Download**: Automatically fetches the model from Google Drive on startup.
 - **Dockerized** for easy deployment.
 - **Swagger UI** for interactive API testing.
 
+![Demo](assets/demo.webp)
+
 ---
+
+## 🎨 Web Interface
+The project now includes a beautiful web interface.
+1.  Open the app URL.
+2.  Drag and drop your image.
+3.  Get instant results!
+
+---
+
 
 ## 🛠️ Local Development
 
@@ -108,6 +121,19 @@ docker build -t meme-classifier .
 ```bash
 docker run -d -p 1221:1221 --name meme-app meme-classifier
 ```
+
+
+---
+
+## ❓ Troubleshooting
+
+### Error 522 / Connection Timed Out
+If you see a **Cloudflare 522** error or the app takes forever to start:
+- **Cause**: The app is downloading the 300MB+ model file on the *first* startup. This can take 2-5 minutes depending on the server's speed.
+- **Solution**:
+    1.  **Wait**: Give it 5-10 minutes.
+    2.  **Check Logs**: If possible, check the container logs (`docker logs meme-app`) to see the download progress.
+    3.  **Persist Storage**: Ensure the `model/` directory is mounted as a volume (already configured in `docker-compose.yaml`). This way, it only downloads ONCE. Future restarts will be instant.
 
 ---
 
